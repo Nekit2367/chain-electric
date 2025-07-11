@@ -6,6 +6,7 @@ import pygame
 pygame.init()
 
 window = Window("Chain Electric", 1280, 720, 60)
+
 grid = Grid(window.GetWidth(), window.GetHeight(), 80)
 
 running = True
