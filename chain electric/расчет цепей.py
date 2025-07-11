@@ -22,27 +22,22 @@ screen=pg.display.set_mode((1300,800))
 pg.display.set_caption('расчет цепей')
 # создаем шрифты для текстов и пишем тексты
 pg.font.init()
-font_style = pg.font.SysFont("bahnschrift", 30) \
+font_style = pg.font.SysFont("bahnschrift", 30) 
 # класс узел
 class Knot():
-    def __init__(self,x,y,number):
-        self.circle=self
+    def __init__(self,x,y):
         self.x=x
         self.y=y
-        self.voltage=0
-        self.connection=[]
-        self.number=number
     def draw_point(self):
         pg.draw.circle(screen,black,(self.x,self.y),5)
 # создаем массив узлов
 massive_knots=[] #массив всех узлов
-number=0
 for i in range(5):
     mas=[]
     for j in range(4):
-        knot=Knot(40+220*i,115+220*j,number)
+        knot=Knot(40+220*i,115+220*j)
+        knot.draw_point()  
         mas.append(knot)
-        number+=1
     massive_knots.append(mas)
 # рисуем узлы
 def draw_knotes():
