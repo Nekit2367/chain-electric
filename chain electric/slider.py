@@ -53,9 +53,6 @@ class Slider():
             return self.width - self.handlePoint
 
         return self.handleX
-    
-    def Update(self):
-        self.value = self.CalculateValue()
             
     def CheckBoundaries(self, x, y):
         if (x < self.x or x > self.x + self.width):
@@ -91,6 +88,9 @@ class Slider():
 
         else:
             self.handleColor = SLIDER_HANDLE_DEFAULT_COLOR
+
+    def Update(self):
+        self.value = self.CalculateValue()
 
     def Render(self, screen, x, y):
         self.x = x
