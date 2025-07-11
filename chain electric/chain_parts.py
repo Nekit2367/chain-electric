@@ -22,8 +22,6 @@ class Element():
         return self.y
     def conclus(self):
         return self.nominale 
-    def new_drop(self,new_drop):
-        self.voltage=new_drop   
 class Resistor(Element):
     def __init__(self,nominal,position):
         Element.__init__(self,position)
