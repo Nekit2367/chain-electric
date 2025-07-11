@@ -1,13 +1,10 @@
 from window import Window
-from grid import Grid
 
 import pygame
 
 pygame.init()
 
 window = Window("Chain Electric", 1280, 720, 60)
-
-grid = Grid(window.GetWidth(), window.GetHeight(), 80)
 
 running = True
 while running:
@@ -18,7 +15,5 @@ while running:
             running = False
 
     window.ClearScreen((0, 0, 0))
-
-    grid.Render(window.GetScreen())
 
     pygame.display.flip()
