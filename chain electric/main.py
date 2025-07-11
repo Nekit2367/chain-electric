@@ -1,5 +1,4 @@
 from window import Window
-
 import pygame
 
 pygame.init()
