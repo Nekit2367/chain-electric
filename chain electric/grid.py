@@ -6,13 +6,13 @@ class Grid():
         self.height = height
         self.targetDistance = targetDistance
 
-        self.color = (30, 30, 30)
+        self.color = (255, 255, 255)
 
         self.InitRows()
         self.InitColumns()
 
-    def SetColor(self, color):
-        self.color = color
+        self.SetPosition(0, 0)
+        self.SetColor(30, 30, 30)
 
     def InitRows(self):
         self.numberRows = int(self.height / self.targetDistance) + 1
@@ -22,14 +22,23 @@ class Grid():
         self.numberColumns = int(self.width / self.targetDistance) + 1
         self.distanceColumns = (self.width - 1) / (self.numberColumns - 1)
 
+    def SetPosition(self, x, y):
+        self.x = x
+        self.y = y
+
+    def SetColor(self, r, g, b):
+        self.color = (r, g, b)
+
     def Render(self, screen):
         for i in range(self.numberRows):
-            y = i * self.distanceRows
-            pygame.draw.line(screen, self.color, (0, y), (self.width, y))
+            x = self.x
+            y = self.y + (i * self.distanceRows)
+            pygame.draw.line(screen, self.color, (x, y), (x + self.width - 1, y))
 
         for j in range(self.numberColumns):
-            x = j * self.distanceColumns
-            pygame.draw.line(screen, self.color, (x, 0), (x, self.height))
+            x = self.x + (j * self.distanceColumns)
+            y = self.y
+            pygame.draw.line(screen, self.color, (x, y), (x, y + self.height - 1))
 
     def GetNumberRows(self):
         return self.numberRows
@@ -42,3 +51,9 @@ class Grid():
     
     def GetDistanceColumns(self):
         return self.distanceColumns
+    
+    def GetPositionX(self):
+        return self.x
+    
+    def GetPositionY(self):
+        return self.y
