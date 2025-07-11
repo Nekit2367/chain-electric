@@ -6,8 +6,6 @@ class Grid():
         self.height = height
         self.targetDistance = targetDistance
 
-        self.color = (255, 255, 255)
-
         self.InitRows()
         self.InitColumns()
 
