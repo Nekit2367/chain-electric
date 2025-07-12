@@ -68,6 +68,8 @@ class Slider():
         mouseX = mouse.get_pos()[0]
         mouseY = mouse.get_pos()[1]
 
+        self.Update()
+
         if (self.CheckBoundaries(mouseX, mouseY)):
             if (event.type == pygame.MOUSEBUTTONDOWN):
                 self.pressed = True
@@ -95,8 +97,6 @@ class Slider():
     def Render(self, screen, x, y):
         self.x = x
         self.y = y
-
-        self.Update()
 
         pygame.draw.rect(screen, self.backgroundColor, (x, y, self.width, self.height))
 
