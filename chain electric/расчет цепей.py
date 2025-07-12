@@ -1,25 +1,23 @@
 import pygame as pg
 import sys
 from buttons import Button
-# 
-from sliders import Slider_resistor
-from sliders import Slider_voltage
-from sliders import Slider_position
-# 
+
+from slider import Slider
+
+from window import Window
+
 from chain_parts import Resistor
 from chain_parts import Voltage
 from chain_parts import Diod
 from chain_parts import Wire
 from chain_parts import Lamp
-# 
 from draw_chain import draw_fon
 # цвета
 white=(255,255,255)
 black=(0,0,0)
 # инициализация экрана
 pg.init()
-screen=pg.display.set_mode((1300,800))
-pg.display.set_caption('расчет цепей')
+window=Window('Chain Electric',1300,800,60)
 # создаем шрифты для текстов и пишем тексты
 pg.font.init()
 font_style = pg.font.SysFont("bahnschrift", 30) 
@@ -29,7 +27,7 @@ class Knot():
         self.x=x
         self.y=y
     def draw_point(self):
-        pg.draw.circle(screen,black,(self.x,self.y),5)
+        pg.draw.circle(window.GetScreen(),black,(self.x,self.y),5)
 # создаем массив узлов
 massive_knots=[] #массив всех узлов
 for i in range(5):
@@ -45,24 +43,23 @@ def draw_knotes():
         for j in range(4):
             massive_knots[i][j].draw_point()          
 # инициализируем ползунки
-slider_resistor=Slider_resistor()
-slider_voltage=Slider_voltage()
-slider_position=Slider_position()
-massive_sliders=[slider_resistor,slider_voltage,slider_position]
-# фиксатор нажатия
-down=False
+slider_resistor=Slider(180,60,0,100,0)
+slider_voltage=Slider(180,60,0,100,0)
+massive_sliders=[slider_resistor,slider_voltage]
 # инициализируем кнопки
-button_resistor=Button(1020,645)
-button_voltage=Button(1020,445)
-button_diod=Button(1110,185)
-button_wire=Button(1130,285)
-button_lamp=Button(1165,80)
-massive_buttons=[button_resistor,button_voltage,button_diod,button_wire,button_lamp]
+button_resistor=Button('add',1020,645,60,60)
+button_voltage=Button('add',1020,445,60,60)
+button_diod=Button('add',1110,185,60,60)
+button_wire=Button('add',1130,285,60,60)
+button_lamp=Button('add',1165,80,60,60)
+button_position=Button('change position',40,5,240,60)
+massive_buttons=[button_resistor,button_voltage,button_diod,button_wire,button_lamp,button_position]
 # класс рука
 class Arm():
     def __init__(self):
         self.lead=False
         self.massive=[]
+        self.position='horisontal'
     # поиск ближайшего узла для того чтобы когда отпускаем деталь, деталь цеплялась сама к нужному узлу
     def found(self):
         x,y=pg.mouse.get_pos()
@@ -88,25 +85,31 @@ class Arm():
     def button_down(self,chain):
         self.lead=True
         if chain==Resistor:
-            part=chain(slider_resistor.resistance(),slider_position.position())
+            part=chain(slider_resistor.GetValue(),self.position)
         elif chain==Voltage:
-            part=chain(slider_voltage.voltage(),slider_position.position())
+            part=chain(slider_voltage.GetValue(),self.position)
         else:
-            part=chain(slider_position.position())
+            part=chain(self.position)
         self.massive.append(part)
         return part
     # функция рисовки элементов
     def draws(self):
         for i in range(len(self.massive)):
-            self.massive[i].draw(screen)
-move_1=False
-move_2=False
-move_3=False 
+            self.massive[i].draw(window.GetScreen())
+    # меняем положение элементов (вертикаль/горизонталь)
+    def change_position(self):
+        if self.position=='horisontal':
+            self.position='vertical'
+        else:
+            self.position='horisontal'
 arm=Arm() 
 while True:
     # рисовка фона
-    draw_fon(font_style,screen,massive_buttons,massive_sliders)
+    draw_fon(font_style,window.GetScreen(),massive_buttons)
     draw_knotes()
+    arm.draws()
+    slider_resistor.Render(window.GetScreen(),1100,650)
+    slider_voltage.Render(window.GetScreen(),1100,450)
     for event in pg.event.get():
         if event.type==pg.QUIT:
             sys.exit()
@@ -117,41 +120,33 @@ while True:
             arm.lead=False
             down=True
             # нажатие кнопок
-            if button_resistor.button_down():
+            if button_resistor.button_down(event):
                 resistor=arm.button_down(Resistor)
-            if button_voltage.button_down():
+            if button_voltage.button_down(event):
                 voltage=arm.button_down(Voltage)
-            if button_diod.button_down():
+            if button_diod.button_down(event):
                 diod=arm.button_down(Diod)
-            if button_wire.button_down():
+            if button_wire.button_down(event):
                 wire=arm.button_down(Wire)
-            if button_lamp.button_down():
+            if button_lamp.button_down(event):
                 lamp=arm.button_down(Lamp)
-        elif event.type==pg.MOUSEBUTTONUP:
-            # сброс
-            down=False
-            move_1=False
-            move_2=False
-            move_3=False
-    # ползунки
-    if down:
-        if move_1:
-            slider_resistor.moving()
-        else:
-            move_1=slider_resistor.buttondown()
-        if move_2:
-            slider_voltage.moving()
-        else:
-            move_2=slider_voltage.buttondown()
-        if move_3:
-            slider_position.moving()
-        else:
-            move_3=slider_position.buttondown()
-    # добавление новых элементов
+            if button_position.button_down(event):
+                arm.change_position()
+    # пересчет значний
+    slider_resistor.ProcessEvents(event)
+    slider_voltage.ProcessEvents(event)
+    #кнопки
+    button_resistor.ProcessEvents(event)
+    button_voltage.ProcessEvents(event)
+    button_wire.ProcessEvents(event)
+    button_diod.ProcessEvents(event)
+    button_lamp.ProcessEvents(event)
+    button_position.ProcessEvents(event)
     if arm.lead:
         arm.moving_part()
-    # перебор массивов для рисовки элементов
-    arm.draws()
     # обновление экрана
     pg.display.update()
     pg.time.delay(15)
+
+
+

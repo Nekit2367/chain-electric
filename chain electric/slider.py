@@ -1,10 +1,16 @@
 import pygame
-
+pygame.font.init()
+font_style = pygame.font.SysFont("bahnschrift", 30) 
+black=(0,0,0)
+grey=(128,128,128)
 SLIDER_BACKGROUND_COLOR = (10, 10, 10)
 SLIDER_HANDLE_DEFAULT_COLOR = (150, 150, 150)
 SLIDER_HANDLE_HOVERED_COLOR = (120, 120, 120)
 SLIDER_HANDLE_PRESSED_COLOR = (100, 100, 100)
-
+def write_text(text,x,y,screen):
+    pygame.draw.rect(screen,grey,(x,y,60,60))
+    val = font_style.render(text, True, black)
+    screen.blit(val, [x+10, y+25])
 class Slider():
     def __init__(self, width, height, minValue, maxValue, defaultValue):
         self.width = width
@@ -101,3 +107,5 @@ class Slider():
         pygame.draw.rect(screen, self.backgroundColor, (x, y, self.width, self.height))
 
         pygame.draw.rect(screen, self.handleColor, (x + self.handleX - self.handlePoint, y, self.handleWidth, self.height))
+        a=round(self.GetValue())
+        write_text(str(a),x +50,self.y+70,screen)
