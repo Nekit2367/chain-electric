@@ -9,7 +9,7 @@ grey=(128,128,128)
 # 
 pg.font.init()
 font_style = pg.font.SysFont("bahnschrift", 30) 
-def draw_fon(font_style,screen,massive_buttons,massive_sliders):
+def draw_fon(font_style,screen,massive_buttons):
     # экран
     screen.fill(white)
     # граница поля
@@ -33,7 +33,3 @@ def draw_fon(font_style,screen,massive_buttons,massive_sliders):
     # кнопки
     for button in massive_buttons:
         button.draw(screen)
-    # ползунки
-    for slider in massive_sliders:
-        slider.draw(screen)
-        slider.write(screen)
