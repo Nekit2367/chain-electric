@@ -1,7 +1,8 @@
 from window import Window
-from grid import Grid
 from slider import Slider
 from button import Button
+from grid import Grid
+from handle import Handle
 
 import pygame
 
@@ -12,12 +13,17 @@ window = Window("Electrical Circuit Simulator", 1280, 720, 60)
 grid = Grid(window.GetWidth() - 215, window.GetHeight() - 10, 25)
 grid.SetPosition(5, 5)
 
-sliderFirst = Slider(200, 20, 0, 100, 10)
-sliderSecond = Slider(200, 20, 0, 100, 10)
-sliderThird = Slider(200, 20, 0, 100, 10)
+# matrix = grid.GetMatrix()
+# matrix.Print()
 
-buttonFirst = Button(200, 20, "Electric Wire")
-buttonSecond = Button(200, 20, "Resistor")
+handle = Handle(grid)
+
+slider1 = Slider(200, 20, 0, 100, 10)
+slider2 = Slider(200, 20, 0, 100, 10)
+slider3 = Slider(200, 20, 0, 100, 10)
+
+button1 = Button(200, 20, "Button")
+button2 = Button(200, 20, "Button")
 
 running = True
 while running:
@@ -26,28 +32,27 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        else:
-            sliderFirst.ProcessEvents(event)
-            sliderSecond.ProcessEvents(event)
-            sliderThird.ProcessEvents(event)
 
-    buttonFirst.ProcessEvent()
-    buttonSecond.ProcessEvent()
+        else:
+            slider1.ProcessEvents(event)
+            slider2.ProcessEvents(event)
+            slider3.ProcessEvents(event)
+
+    button1.ProcessEvent()
+    button2.ProcessEvent()
 
     window.ClearScreen((0, 0, 0))
 
     grid.Render(window.GetScreen())
 
-    sliderFirst.Render(window.GetScreen(), window.GetWidth() - 205, 5)
-    sliderSecond.Render(window.GetScreen(), window.GetWidth() - 205, 30)
-    sliderThird.Render(window.GetScreen(), window.GetWidth() - 205, 55)
+    handle.Place()
+    handle.Render(window.GetScreen())
 
-    buttonFirst.Render(window.GetScreen(), window.GetWidth() - 205, 80)
-    if (buttonFirst.GetValue()):
-        print("First")
+    slider1.Render(window.GetScreen(), window.GetWidth() - 205, 5)
+    slider2.Render(window.GetScreen(), window.GetWidth() - 205, 30)
+    slider3.Render(window.GetScreen(), window.GetWidth() - 205, 55)
 
-    buttonSecond.Render(window.GetScreen(), window.GetWidth() - 205, 105)
-    if (buttonSecond.GetValue()):
-        print("Second")
+    button1.Render(window.GetScreen(), window.GetWidth() - 205, 80)
+    button2.Render(window.GetScreen(), window.GetWidth() - 205, 105)
 
     pygame.display.flip()

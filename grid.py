@@ -1,3 +1,6 @@
+from matrix import Vertex
+from matrix import Matrix
+
 import pygame
 
 GRID_COLOR = (25, 25, 25)
@@ -60,3 +63,39 @@ class Grid():
     
     def GetPositionY(self):
         return self.y
+    
+    def GetMatrix(self) -> Matrix:
+        n = self.GetNumberRows()
+        m = self.GetNumberColumns()
+
+        matrix = Matrix(n, m)
+
+        for i in range(n):
+            for j in range(m):
+                vertex = Vertex(i * self.distanceRows, j * self.distanceColumns)
+                matrix.SetVertex(vertex, i, j)
+
+        return matrix
+    
+    def CheckBoundaries(self):
+        if (pygame.mouse.get_pos()[0] < self.x or pygame.mouse.get_pos()[0] > self.x + self.width):
+            return False
+        
+        if (pygame.mouse.get_pos()[1] < self.y or pygame.mouse.get_pos()[1] > self.y + self.height):
+            return False
+        
+        return True
+
+    def GetNearVertex(self) -> Vertex:
+        mouse = pygame.mouse
+        mouseX = mouse.get_pos()[0] - self.x
+        mouseY = mouse.get_pos()[1] - self.y
+
+        column = round(mouseX / self.GetDistanceColumns())
+        row = round(mouseY / self.GetDistanceRows())
+
+        if (column <= self.GetNumberColumns() and row <= self.GetDistanceRows()):
+            matrix = self.GetMatrix()
+            return matrix.GetVertexes()[row][column]
+        
+        return Vertex()
