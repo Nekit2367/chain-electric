@@ -1,16 +1,12 @@
 import pygame
-pygame.font.init()
-font_style = pygame.font.SysFont("bahnschrift", 30) 
-black=(0,0,0)
-grey=(128,128,128)
+
 SLIDER_BACKGROUND_COLOR = (10, 10, 10)
-SLIDER_HANDLE_DEFAULT_COLOR = (150, 150, 150)
-SLIDER_HANDLE_HOVERED_COLOR = (120, 120, 120)
-SLIDER_HANDLE_PRESSED_COLOR = (100, 100, 100)
-def write_text(text,x,y,screen):
-    pygame.draw.rect(screen,grey,(x,y,60,60))
-    val = font_style.render(text, True, black)
-    screen.blit(val, [x+10, y+25])
+SLIDER_TEXT_COLOR = (200, 200, 200)
+SLIDER_SCALE_COLOR = (40, 10, 10)
+SLIDER_HANDLE_DEFAULT_COLOR = (120, 120, 120)
+SLIDER_HANDLE_HOVERED_COLOR = (100, 100, 100)
+SLIDER_HANDLE_PRESSED_COLOR = (80, 80, 80)
+
 class Slider():
     def __init__(self, width, height, minValue, maxValue, defaultValue):
         self.width = width
@@ -24,7 +20,7 @@ class Slider():
         self.backgroundColor = SLIDER_BACKGROUND_COLOR
         self.handleColor = SLIDER_HANDLE_DEFAULT_COLOR
         
-        self.SetHandleWidth(width)
+        self.SetHandleWidth(width * 0.02)
         self.handlePoint = self.handleWidth / 2
 
         self.value = defaultValue
@@ -33,11 +29,13 @@ class Slider():
         self.hovered = False
         self.pressed = False
 
+        self.fontStyle = pygame.font.SysFont("Arial", int(self.height / 2)) 
+
     def GetValue(self):
         return self.value
     
     def SetHandleWidth(self, handleWidth):
-        self.handleWidth = 0.05 * handleWidth
+        self.handleWidth = handleWidth
 
     def CalculateHandlePosition(self):
         valueRange = self.maxValue - self.minValue
@@ -73,6 +71,7 @@ class Slider():
         mouse = pygame.mouse
         mouseX = mouse.get_pos()[0]
         mouseY = mouse.get_pos()[1]
+        mousePressed = mouse.get_pressed()[0]
 
         self.Update()
 
@@ -98,7 +97,14 @@ class Slider():
             self.handleColor = SLIDER_HANDLE_DEFAULT_COLOR
 
     def Update(self):
-        self.value = self.CalculateValue()
+        self.value = int(self.CalculateValue())
+
+    def RenderText(self, screen, text):
+        source = self.fontStyle.render(text, True, SLIDER_TEXT_COLOR)
+        textRect = source.get_rect()
+        centeredY = self.y + (self.height - textRect.height) / 2
+
+        screen.blit(source, [self.x + (self.width - textRect.width) / 2, centeredY])
 
     def Render(self, screen, x, y):
         self.x = x
@@ -106,6 +112,8 @@ class Slider():
 
         pygame.draw.rect(screen, self.backgroundColor, (x, y, self.width, self.height))
 
+        pygame.draw.rect(screen, SLIDER_SCALE_COLOR, (self.x, self.y, self.handleX - self.handlePoint, self.height))
+
         pygame.draw.rect(screen, self.handleColor, (x + self.handleX - self.handlePoint, y, self.handleWidth, self.height))
-        a=round(self.GetValue())
-        write_text(str(a),x +50,self.y+70,screen)
+
+        self.RenderText(screen, str(self.GetValue()))

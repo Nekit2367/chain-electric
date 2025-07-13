@@ -1,5 +1,7 @@
 import pygame
 
+GRID_COLOR = (25, 25, 25)
+
 class Grid():
     def __init__(self, width, height, targetDistance):
         self.width = width
@@ -10,7 +12,10 @@ class Grid():
         self.InitColumns()
 
         self.SetPosition(0, 0)
-        self.SetColor(30, 30, 30)
+        self.SetColor(GRID_COLOR)
+
+        self.hovered = False
+        self.pressed = False
 
     def InitRows(self):
         self.numberRows = int(self.height / self.targetDistance) + 1
@@ -24,8 +29,8 @@ class Grid():
         self.x = x
         self.y = y
 
-    def SetColor(self, r, g, b):
-        self.color = (r, g, b)
+    def SetColor(self, color):
+        self.color = color
 
     def Render(self, screen):
         for i in range(self.numberRows):
