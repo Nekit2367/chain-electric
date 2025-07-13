@@ -16,8 +16,8 @@ sliderFirst = Slider(200, 20, 0, 100, 10)
 sliderSecond = Slider(200, 20, 0, 100, 10)
 sliderThird = Slider(200, 20, 0, 100, 10)
 
-buttonFirst = Button(200, 20, "Button")
-buttonSecond = Button(200, 20, "Button")
+buttonFirst = Button(200, 20, "Electric Wire")
+buttonSecond = Button(200, 20, "Resistor")
 
 running = True
 while running:
