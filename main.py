@@ -2,11 +2,12 @@ from window import Window
 from grid import Grid
 from slider import Slider
 from button import Button
+
 import pygame
 
 pygame.init()
 
-window = Window("Chain Electric", 1280, 720, 60)
+window = Window("Electrical Circuit Simulator", 1280, 720, 60)
 
 grid = Grid(window.GetWidth() - 215, window.GetHeight() - 10, 25)
 grid.SetPosition(5, 5)
