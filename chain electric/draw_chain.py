@@ -11,10 +11,10 @@ pg.font.init()
 font_style = pg.font.SysFont("bahnschrift", 30) 
 def draw_fon(font_style,screen,massive_buttons):
     # экран
-    screen.fill(white)
-    # граница поля
-    pg.draw.line(screen,black,[0,70],[1000,70],6)
-    pg.draw.line(screen,black,[1000,70],[1000,800],6)
+    # screen.fill(white)
+    # # граница поля
+    # pg.draw.line(screen,black,[0,70],[1000,70],6)
+    # pg.draw.line(screen,black,[1000,70],[1000,800],6)
     # добавить резистор
     value = font_style.render('резистор', True, black)
     screen.blit(value, [1065, 590])

@@ -1,7 +1,14 @@
 import pygame
-
+black=(0,0,0)
+class Knot():
+    def __init__(self,x,y,screen):
+        self.x=x
+        self.y=y
+        self.screen=screen
+    def draw_point(self):
+        pygame.draw.circle(self.screen,black,(self.x,self.y),5)
 class Grid():
-    def __init__(self, width, height, targetDistance):
+    def __init__(self, width, height, targetDistance,screen):
         self.width = width
         self.height = height
         self.targetDistance = targetDistance
@@ -9,8 +16,11 @@ class Grid():
         self.InitRows()
         self.InitColumns()
 
-        self.SetPosition(0, 0)
+        self.SetPosition(5, 75)
         self.SetColor(30, 30, 30)
+
+        self.massive_knots=[]
+        self.screen=screen
 
     def InitRows(self):
         self.numberRows = int(self.height / self.targetDistance) + 1
@@ -27,16 +37,13 @@ class Grid():
     def SetColor(self, r, g, b):
         self.color = (r, g, b)
 
-    def Render(self, screen):
-        for i in range(self.numberRows):
-            x = self.x
-            y = self.y + (i * self.distanceRows)
-            pygame.draw.line(screen, self.color, (x, y), (x + self.width - 1, y))
-
-        for j in range(self.numberColumns):
-            x = self.x + (j * self.distanceColumns)
-            y = self.y
-            pygame.draw.line(screen, self.color, (x, y), (x, y + self.height - 1))
+    def Render(self,screen):
+        for i in range(self.GetNumberRows()):
+            for j in range(self.GetNumberColumns()):
+                x = self.x + (j * self.distanceColumns)
+                y = self.y + (i * self.distanceRows)
+                pygame.draw.circle(screen,black,(x,y),5)
+                self.massive_knots.append(Knot(x,y,self.screen))
 
     def GetNumberRows(self):
         return self.numberRows
@@ -55,3 +62,6 @@ class Grid():
     
     def GetPositionY(self):
         return self.y
+    
+    def GetMassive(self):
+        return self.massive_knots

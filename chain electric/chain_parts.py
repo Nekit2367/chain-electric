@@ -28,59 +28,59 @@ class Resistor(Element):
         self.nominale=nominal
     def draw(self,screen):        
         if self.position=='horisontal':
-            pg.draw.line(screen,black,[self.x,self.y],[self.x+220,self.y],2)
-            pg.draw.rect(screen,black,(self.x+40,self.y-15,140,30))
+            pg.draw.line(screen,black,[self.x,self.y],[self.x+100,self.y],2)
+            pg.draw.rect(screen,black,(self.x+18,self.y-8,64,14))
         else:
-            pg.draw.line(screen,black,[self.x,self.y],[self.x,self.y+220],2)
-            pg.draw.rect(screen,black,(self.x-15,self.y+40,30,140))
+            pg.draw.line(screen,black,[self.x,self.y],[self.x,self.y+100],2)
+            pg.draw.rect(screen,black,(self.x-8,self.y+18,14,64))
 class Voltage(Element):
     def __init__(self,nominal,position):
         Element.__init__(self,position)
         self.nominale=nominal
     def draw(self,screen):        
         if self.position=='horisontal':
-            pg.draw.line(screen,black,(self.x,self.y),(self.x+90,self.y),2)
-            pg.draw.line(screen,black,(self.x+130,self.y),(self.x+220,self.y),2)
-            pg.draw.line(screen,black,(self.x+90,self.y-40),(self.x+90,self.y+40),2)
-            pg.draw.line(screen,black,(self.x+130,self.y-20),(self.x+130,self.y+20),2)
+            pg.draw.line(screen,black,(self.x,self.y),(self.x+41,self.y),2)
+            pg.draw.line(screen,black,(self.x+59,self.y),(self.x+100,self.y),2)
+            pg.draw.line(screen,black,(self.x+41,self.y-18),(self.x+41,self.y+18),2)
+            pg.draw.line(screen,black,(self.x+59,self.y-9),(self.x+59,self.y+9),2)
         else:
-            pg.draw.line(screen,black,(self.x,self.y),(self.x,self.y+90),2)
-            pg.draw.line(screen,black,(self.x,self.y+130),(self.x,self.y+220),2)
-            pg.draw.line(screen,black,(self.x-40,self.y+90),(self.x+40,self.y+90),2)
-            pg.draw.line(screen,black,(self.x-20,self.y+130),(self.x+20,self.y+130),2)
+            pg.draw.line(screen,black,(self.x,self.y),(self.x,self.y+41),2)
+            pg.draw.line(screen,black,(self.x,self.y+59),(self.x,self.y+100),2)
+            pg.draw.line(screen,black,(self.x-18,self.y+41),(self.x+18,self.y+41),2)
+            pg.draw.line(screen,black,(self.x-9,self.y+59),(self.x+9,self.y+59),2)
 class Diod(Element):
     def __init__(self,position):
         Element.__init__(self,position)
     def draw(self,screen):
         if self.position=='horisontal':
-            pg.draw.line(screen,black,[self.x,self.y],[self.x+220,self.y],2)
-            pg.draw.lines(screen,black,True,[[self.x+130,self.y-40],[self.x+130,self.y+40],[self.x+70,self.y]])
+            pg.draw.line(screen,black,[self.x,self.y],[self.x+100,self.y],2)
+            pg.draw.lines(screen,black,True,[[self.x+59,self.y-18],[self.x+59,self.y+18],[self.x+32,self.y]])
         else:
-            pg.draw.line(screen,black,[self.x,self.y],[self.x,self.y+220],2)
-            pg.draw.lines(screen,black,True,[[self.x-40,self.y+130],[self.x+40,self.y+130],[self.x,self.y+70]])
+            pg.draw.line(screen,black,[self.x,self.y],[self.x,self.y+100],2)
+            pg.draw.lines(screen,black,True,[[self.x-18,self.y+59],[self.x+18,self.y+59],[self.x,self.y+32]])
 class Wire(Element):
     def __init__(self,position):
         Element.__init__(self,position)
     def draw(self,screen):
         if self.position=='horisontal':
-            pg.draw.line(screen,black,[self.x,self.y],[self.x+220,self.y],2)
+            pg.draw.line(screen,black,[self.x,self.y],[self.x+100,self.y],2)
         else:
-            pg.draw.line(screen,black,[self.x,self.y],[self.x,self.y+220],2)
+            pg.draw.line(screen,black,[self.x,self.y],[self.x,self.y+100],2)
 class Lamp(Element):
     def __init__(self,position):
         Element.__init__(self,position)
         self.nominale=10  
     def draw(self,screen):
         if self.position=='horisontal':
-            pg.draw.circle(screen,black,(self.x+110,self.y),40,5)
-            pg.draw.line(screen,black,[self.x,self.y],[self.x+70,self.y],2)
-            pg.draw.line(screen,black,[self.x+150,self.y],[self.x+220,self.y],2)
-            pg.draw.line(screen,black,[self.x+87,self.y-23],[self.x+133,self.y+23],2)
-            pg.draw.line(screen,black,[self.x+133,self.y-23],[self.x+87,self.y+23],2)
+            pg.draw.circle(screen,black,(self.x+50,self.y),18,3)
+            pg.draw.line(screen,black,[self.x,self.y],[self.x+32,self.y],2)
+            pg.draw.line(screen,black,[self.x+68,self.y],[self.x+100,self.y],2)
+            pg.draw.line(screen,black,[self.x+40,self.y-10],[self.x+60,self.y+10],2)
+            pg.draw.line(screen,black,[self.x+60,self.y-10],[self.x+40,self.y+10],2)
         else:
-            pg.draw.circle(screen,black,(self.x,self.y+110),40,5)
-            pg.draw.line(screen,black,[self.x,self.y],[self.x,self.y+70],2)
-            pg.draw.line(screen,black,[self.x,self.y+150],[self.x,self.y+220],2)
-            pg.draw.line(screen,black,[self.x-23,self.y+87],[self.x+23,self.y+133],2)
-            pg.draw.line(screen,black,[self.x+23,self.y+87],[self.x-23,self.y+133],2)
+            pg.draw.circle(screen,black,(self.x,self.y+50),18,3)
+            pg.draw.line(screen,black,[self.x,self.y],[self.x,self.y+32],2)
+            pg.draw.line(screen,black,[self.x,self.y+68],[self.x,self.y+100],2)
+            pg.draw.line(screen,black,[self.x-10,self.y+40],[self.x+10,self.y+60],2)
+            pg.draw.line(screen,black,[self.x+10,self.y+40],[self.x-10,self.y+60],2)
 

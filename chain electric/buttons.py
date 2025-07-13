@@ -14,7 +14,7 @@ font_style = pg.font.SysFont("bahnschrift", 30)
 def write_text(text,x_position,y_position,screen,width,height,color):
     pg.draw.rect(screen,color,(x_position,y_position,width,height))
     value = font_style.render(text, True, black)
-    screen.blit(value, [x_position+10, y_position+25])
+    screen.blit(value, [x_position+10, y_position+20])
 class Button():
     def __init__(self,text,x,y,width,height):
         self.rect=self

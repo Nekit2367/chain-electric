@@ -2,6 +2,8 @@ import pygame
 
 class Window():
     def __init__(self, title, width, height, fps):
+        info = pygame.display.Info()
+        print(info.current_w)
         self.width = width
         self.height = height
         self.fps = fps
@@ -19,7 +21,7 @@ class Window():
         pygame.display.set_icon(icon)
 
     def SetScreenResolution(self):
-        self.screen = pygame.display.set_mode((self.width, self.height))
+        self.screen = pygame.display.set_mode((self.width, self.height),pygame.FULLSCREEN)#pygame.FULLSCREEN
 
     def SetClock(self):
         self.clock = pygame.time.Clock()

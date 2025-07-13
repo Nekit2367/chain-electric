@@ -2,6 +2,9 @@ import pygame as pg
 import sys
 from buttons import Button
 
+from grid import Grid
+from grid import Knot
+
 from slider import Slider
 
 from window import Window
@@ -12,36 +15,19 @@ from chain_parts import Diod
 from chain_parts import Wire
 from chain_parts import Lamp
 from draw_chain import draw_fon
+
 # цвета
 white=(255,255,255)
 black=(0,0,0)
 # инициализация экрана
 pg.init()
-window=Window('Chain Electric',1300,800,60)
+window=Window('Chain Electric',1550,800,60)
+grid=Grid(1000,700,100,window.GetScreen()) 
 # создаем шрифты для текстов и пишем тексты
 pg.font.init()
 font_style = pg.font.SysFont("bahnschrift", 30) 
-# класс узел
-class Knot():
-    def __init__(self,x,y):
-        self.x=x
-        self.y=y
-    def draw_point(self):
-        pg.draw.circle(window.GetScreen(),black,(self.x,self.y),5)
 # создаем массив узлов
-massive_knots=[] #массив всех узлов
-for i in range(5):
-    mas=[]
-    for j in range(4):
-        knot=Knot(40+220*i,115+220*j)
-        knot.draw_point()  
-        mas.append(knot)
-    massive_knots.append(mas)
-# рисуем узлы
-def draw_knotes():
-    for i in range(5):
-        for j in range(4):
-            massive_knots[i][j].draw_point()          
+massive_knots=grid.GetMassive()       
 # инициализируем ползунки
 slider_resistor=Slider(180,60,0,100,0)
 slider_voltage=Slider(180,60,0,100,0)
@@ -52,8 +38,10 @@ button_voltage=Button('add',1020,445,60,60)
 button_diod=Button('add',1110,185,60,60)
 button_wire=Button('add',1130,285,60,60)
 button_lamp=Button('add',1165,80,60,60)
-button_position=Button('change position',40,5,240,60)
-massive_buttons=[button_resistor,button_voltage,button_diod,button_wire,button_lamp,button_position]
+button_position=Button('change position',40,5,240,50)
+button_delete=Button('delete',1100,10,95,60)
+button_exit=Button('exit',1450,10,95,60)
+massive_buttons=[button_resistor,button_voltage,button_diod,button_wire,button_lamp,button_position,button_delete,button_exit]
 # класс рука
 class Arm():
     def __init__(self):
@@ -64,17 +52,16 @@ class Arm():
     def found(self):
         x,y=pg.mouse.get_pos()
         mas_len=[]
-        for i in range(5):
-            for j in range(4):
-                dist=(x-massive_knots[i][j].x)**2+(y-massive_knots[i][j].y)**2
-                dist=dist**0.5
-                mas_len.append(dist)
+        for i in range(len(massive_knots)):
+            dist=(x-massive_knots[i].x)**2+(y-massive_knots[i].y)**2
+            dist=dist**0.5
+            mas_len.append(dist)
         z=mas_len.index(min(mas_len))
-        return [z//4,z%4]
+        return z
     # функция фиксации
     def fixing(self):
         index=self.found()
-        knot=massive_knots[index[0]][index[1]]
+        knot=massive_knots[index]
         self.massive[-1].new_x(knot.x)
         self.massive[-1].new_y(knot.y)        
     # переноски элементов
@@ -102,11 +89,16 @@ class Arm():
             self.position='vertical'
         else:
             self.position='horisontal'
-arm=Arm() 
+    def delete(self):
+        if len(self.massive)>0:
+            self.massive.pop()
+arm=Arm()
 while True:
-    # рисовка фона
+    window.ClearScreen(white)
+    grid.Render(window.GetScreen())
+    # # рисовка фона
     draw_fon(font_style,window.GetScreen(),massive_buttons)
-    draw_knotes()
+    # draw_knotes()
     arm.draws()
     slider_resistor.Render(window.GetScreen(),1100,650)
     slider_voltage.Render(window.GetScreen(),1100,450)
@@ -132,6 +124,10 @@ while True:
                 lamp=arm.button_down(Lamp)
             if button_position.button_down(event):
                 arm.change_position()
+            if button_delete.button_down(event):
+                arm.delete()
+            if button_exit.button_down(event):
+                sys.exit()
     # пересчет значний
     slider_resistor.ProcessEvents(event)
     slider_voltage.ProcessEvents(event)
@@ -142,9 +138,10 @@ while True:
     button_diod.ProcessEvents(event)
     button_lamp.ProcessEvents(event)
     button_position.ProcessEvents(event)
+    button_delete.ProcessEvents(event)
     if arm.lead:
         arm.moving_part()
-    # обновление экрана
+    # # обновление экрана
     pg.display.update()
     pg.time.delay(15)
 
