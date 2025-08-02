@@ -8,9 +8,8 @@ SLIDER_HANDLE_DEFAULT_COLOR = (150, 150, 150)
 SLIDER_HANDLE_HOVERED_COLOR = (120, 120, 120)
 SLIDER_HANDLE_PRESSED_COLOR = (100, 100, 100)
 def write_text(text,x,y,screen):
-    pygame.draw.rect(screen,grey,(x,y,60,60))
     val = font_style.render(text, True, black)
-    screen.blit(val, [x+10, y+25])
+    screen.blit(val, [x+180, y-55])
 class Slider():
     def __init__(self, width, height, minValue, maxValue, defaultValue):
         self.width = width
@@ -98,7 +97,7 @@ class Slider():
     def Update(self):
         self.value = self.CalculateValue()
 
-    def Render(self, screen, x, y):
+    def Render(self, screen, x, y,value_stat):
         self.x = x
         self.y = y
 
@@ -108,4 +107,4 @@ class Slider():
 
         pygame.draw.rect(screen, self.handleColor, (x + self.handleX - self.handlePoint, y, self.handleWidth, self.height))
         a=round(self.GetValue())
-        write_text(str(a),x +50,self.y+70,screen)
+        write_text(str(a)+' '+value_stat,x +50,self.y+70,screen)

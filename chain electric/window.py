@@ -3,7 +3,6 @@ import pygame
 class Window():
     def __init__(self, title, width, height, fps):
         info = pygame.display.Info()
-        print(info.current_w)
         self.width = width
         self.height = height
         self.fps = fps

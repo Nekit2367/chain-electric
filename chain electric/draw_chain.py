@@ -10,26 +10,21 @@ grey=(128,128,128)
 pg.font.init()
 font_style = pg.font.SysFont("bahnschrift", 30) 
 def draw_fon(font_style,screen,massive_buttons):
-    # экран
-    # screen.fill(white)
-    # # граница поля
-    # pg.draw.line(screen,black,[0,70],[1000,70],6)
-    # pg.draw.line(screen,black,[1000,70],[1000,800],6)
     # добавить резистор
     value = font_style.render('резистор', True, black)
-    screen.blit(value, [1065, 590])
+    screen.blit(value, [1100, 490])
     # добавить напряжение
     value = font_style.render('напряжение', True, black)
-    screen.blit(value, [1065, 390])
+    screen.blit(value, [1100, 370])
     # добавить провод
     value = font_style.render('провод', True, black)
-    screen.blit(value, [1025, 300])
+    screen.blit(value, [1125, 300])
     # добавить диод
     value = font_style.render('диод', True, black)
-    screen.blit(value, [1025, 200])
+    screen.blit(value, [1125, 200])
     # добавить лампочку
     value = font_style.render('лампочка', True, black)
-    screen.blit(value, [1025, 100])
+    screen.blit(value, [1125, 100])
     # кнопки
     for button in massive_buttons:
         button.draw(screen)

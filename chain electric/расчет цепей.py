@@ -14,6 +14,8 @@ from chain_parts import Voltage
 from chain_parts import Diod
 from chain_parts import Wire
 from chain_parts import Lamp
+from chain_parts import Condencator
+from chain_parts import Inductor
 from draw_chain import draw_fon
 
 # цвета
@@ -22,26 +24,30 @@ black=(0,0,0)
 # инициализация экрана
 pg.init()
 window=Window('Chain Electric',1550,800,60)
-grid=Grid(1000,700,100,window.GetScreen()) 
+grid=Grid(1000,700,147,window.GetScreen()) 
 # создаем шрифты для текстов и пишем тексты
 pg.font.init()
 font_style = pg.font.SysFont("bahnschrift", 30) 
 # создаем массив узлов
 massive_knots=grid.GetMassive()       
 # инициализируем ползунки
-slider_resistor=Slider(180,60,0,100,0)
-slider_voltage=Slider(180,60,0,100,0)
-massive_sliders=[slider_resistor,slider_voltage]
+slider_resistor=Slider(220,60,0,100,0)
+slider_voltage=Slider(220,60,0,100,0)
+slider_condecator=Slider(220,60,0,100,0)
+slider_inductance=Slider(220,60,0,100,0)
+massive_sliders=[slider_resistor,slider_voltage,slider_condecator,slider_inductance]
 # инициализируем кнопки
-button_resistor=Button('add',1020,645,60,60)
-button_voltage=Button('add',1020,445,60,60)
-button_diod=Button('add',1110,185,60,60)
-button_wire=Button('add',1130,285,60,60)
-button_lamp=Button('add',1165,80,60,60)
+button_resistor=Button('add',1200,530,60,60)
+button_voltage=Button('add',1200,410,60,60)
+button_diod=Button('add',1300,185,60,60)
+button_wire=Button('add',1300,285,60,60)
+button_lamp=Button('add',1300,80,60,60)
+button_condencator=Button('add',1200,650,60,60)
+button_inductor=Button('add',1200,770,60,60)
 button_position=Button('change position',40,5,240,50)
 button_delete=Button('delete',1100,10,95,60)
-button_exit=Button('exit',1450,10,95,60)
-massive_buttons=[button_resistor,button_voltage,button_diod,button_wire,button_lamp,button_position,button_delete,button_exit]
+button_exit=Button('exit',1496,10,100,70)
+massive_buttons=[button_resistor,button_voltage,button_diod,button_wire,button_lamp,button_position,button_delete,button_exit,button_condencator,button_inductor]
 # класс рука
 class Arm():
     def __init__(self):
@@ -82,7 +88,7 @@ class Arm():
     # функция рисовки элементов
     def draws(self):
         for i in range(len(self.massive)):
-            self.massive[i].draw(window.GetScreen())
+            self.massive[i].draw(window.GetScreen(),grid.GetDistanceColumns())
     # меняем положение элементов (вертикаль/горизонталь)
     def change_position(self):
         if self.position=='horisontal':
@@ -98,10 +104,11 @@ while True:
     grid.Render(window.GetScreen())
     # # рисовка фона
     draw_fon(font_style,window.GetScreen(),massive_buttons)
-    # draw_knotes()
     arm.draws()
-    slider_resistor.Render(window.GetScreen(),1100,650)
-    slider_voltage.Render(window.GetScreen(),1100,450)
+    slider_resistor.Render(window.GetScreen(),1280,530,'Ом')
+    slider_voltage.Render(window.GetScreen(),1280,410,'В')
+    slider_condecator.Render(window.GetScreen(),1280,650,'мФ')
+    slider_inductance.Render(window.GetScreen(),1280,770,'Гн')
     for event in pg.event.get():
         if event.type==pg.QUIT:
             sys.exit()
@@ -122,6 +129,10 @@ while True:
                 wire=arm.button_down(Wire)
             if button_lamp.button_down(event):
                 lamp=arm.button_down(Lamp)
+            if button_condencator.button_down(event):
+                condencator=arm.button_down(Condencator)
+            if button_inductor.button_down(event):
+                inductor=arm.button_down(Inductor)
             if button_position.button_down(event):
                 arm.change_position()
             if button_delete.button_down(event):
@@ -131,14 +142,19 @@ while True:
     # пересчет значний
     slider_resistor.ProcessEvents(event)
     slider_voltage.ProcessEvents(event)
+    slider_condecator.ProcessEvents(event)
+    slider_inductance.ProcessEvents(event)
     #кнопки
     button_resistor.ProcessEvents(event)
     button_voltage.ProcessEvents(event)
     button_wire.ProcessEvents(event)
     button_diod.ProcessEvents(event)
     button_lamp.ProcessEvents(event)
+    button_condencator.ProcessEvents(event)
     button_position.ProcessEvents(event)
     button_delete.ProcessEvents(event)
+    button_exit.ProcessEvents(event)
+    button_inductor.ProcessEvents(event)
     if arm.lead:
         arm.moving_part()
     # # обновление экрана
