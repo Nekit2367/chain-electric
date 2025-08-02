@@ -8,7 +8,7 @@ class Knot():
     def draw_point(self):
         pygame.draw.circle(self.screen,black,(self.x,self.y),5)
 class Grid():
-    def __init__(self, width, height, targetDistance,screen):
+    def __init__(self, width, height, targetDistance):
         self.width = width
         self.height = height
         self.targetDistance = targetDistance
@@ -20,7 +20,7 @@ class Grid():
         self.SetColor(30, 30, 30)
 
         self.massive_knots=[]
-        self.screen=screen
+
 
     def InitRows(self):
         self.numberRows = int(self.height / self.targetDistance) + 1
@@ -43,7 +43,7 @@ class Grid():
                 x = self.x + (j * self.distanceColumns)
                 y = self.y + (i * self.distanceRows)
                 pygame.draw.circle(screen,black,(x,y),5)
-                self.massive_knots.append(Knot(x,y,self.screen))
+                self.massive_knots.append(Knot(x,y,screen))
 
     def GetNumberRows(self):
         return self.numberRows

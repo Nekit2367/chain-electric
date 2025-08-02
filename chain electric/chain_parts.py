@@ -13,6 +13,7 @@ class Element():
         self.voltage_drop=0
         self.position=position
         self.thickness=2
+        self.position=position
     def new_x(self,x_new):
         self.x=x_new
     def new_y(self,y_new):
@@ -23,6 +24,11 @@ class Element():
         return self.y
     def conclus(self):
         return self.nominale 
+    # def change_position(self):
+    #     if self.position=='horisontal':
+    #         self.position=='vertical'
+    #     else:
+    #         self.position='horisontal'
 class Resistor(Element):
     def __init__(self,nominal,position):
         Element.__init__(self,position)
@@ -118,3 +124,12 @@ class Inductor(Element):
             pg.draw.arc(screen,black,[self.x+3*self.side,self.y-13,self.side+1,self.side+1],0,math.pi,width=self.thickness)
         else:
             pass
+class Key(Element):
+    def __init__(self,position):
+        Element.__init__(self,position)
+        self.nominale=10 
+        self.condition='off'
+    def draw(self,screen,distance):
+        if self.condition=='of':
+            if self.position=='horisontal':
+                pass
